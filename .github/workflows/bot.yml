@@ -39,7 +39,9 @@ jobs:
         run: npm ci
 
       - name: Playwright Browser installieren
-        run: npx playwright install chromium --with-deps
+        run: |
+          sudo apt-get update
+          npx playwright install --with-deps chromium
 
       - name: 🚁 Bot starten – ${{ inputs.world }}
         run: |
