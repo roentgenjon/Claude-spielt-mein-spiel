@@ -1,22 +1,22 @@
 {
   "world": "multiplayer",
   "run_id": "24776198806",
-  "timestamp": "2026-04-22T11:48:04.089Z",
+  "timestamp": "2026-04-22T11:49:34.906Z",
   "duration": "30",
   "status": "running",
-  "elapsed_seconds": 1,
-  "battery": "100",
+  "elapsed_seconds": 92,
+  "battery": "99",
   "coins": 4058,
   "log_last_10": [
-    "[2026-04-22T11:47:21.584Z] Login...",
-    "[2026-04-22T11:47:31.259Z] Login OK: ClaudeBot7777",
-    "[2026-04-22T11:47:36.034Z] Screenshot: 00_menu",
-    "[2026-04-22T11:47:36.034Z] ",
-    "--- Starte: multiplayer (30 Min) ---",
-    "[2026-04-22T11:47:42.610Z] Play-Buttons: 4, wähle Index 3",
-    "[2026-04-22T11:48:02.839Z] Spielschleife gestartet",
-    "[2026-04-22T11:48:04.089Z] Neue Coins: 4058",
-    "[2026-04-22T11:48:04.089Z] [0s] Akku: 100% | Coins: 4058 | Station: true",
-    "[2026-04-22T11:48:04.089Z] ⚡ Ladestation erreicht!"
+    "[2026-04-22T11:49:08.166Z] ⚡ Ladestation erreicht!",
+    "[2026-04-22T11:49:11.235Z] [68s] Akku: 99% | Coins: 4058 | Station: true",
+    "[2026-04-22T11:49:11.235Z] ⚡ Ladestation erreicht!",
+    "[2026-04-22T11:49:14.298Z] ⚡ Ladestation erreicht!",
+    "[2026-04-22T11:49:17.399Z] ⚡ Ladestation erreicht!",
+    "[2026-04-22T11:49:20.470Z] ⚡ Ladestation erreicht!",
+    "[2026-04-22T11:49:25.635Z] ⚡ Ladestation erreicht!",
+    "[2026-04-22T11:49:28.736Z] ⚡ Ladestation erreicht!",
+    "[2026-04-22T11:49:31.799Z] ⚡ Ladestation erreicht!",
+    "[2026-04-22T11:49:34.905Z] ⚡ Ladestation erreicht!"
   ]
 }
