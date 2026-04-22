@@ -1,22 +1,22 @@
 {
   "world": "multiplayer",
   "run_id": "24776198806",
-  "timestamp": "2026-04-22T11:49:34.906Z",
+  "timestamp": "2026-04-22T11:51:09.106Z",
   "duration": "30",
   "status": "running",
-  "elapsed_seconds": 92,
+  "elapsed_seconds": 186,
   "battery": "99",
   "coins": 4058,
   "log_last_10": [
-    "[2026-04-22T11:49:08.166Z] ⚡ Ladestation erreicht!",
-    "[2026-04-22T11:49:11.235Z] [68s] Akku: 99% | Coins: 4058 | Station: true",
-    "[2026-04-22T11:49:11.235Z] ⚡ Ladestation erreicht!",
-    "[2026-04-22T11:49:14.298Z] ⚡ Ladestation erreicht!",
-    "[2026-04-22T11:49:17.399Z] ⚡ Ladestation erreicht!",
-    "[2026-04-22T11:49:20.470Z] ⚡ Ladestation erreicht!",
-    "[2026-04-22T11:49:25.635Z] ⚡ Ladestation erreicht!",
-    "[2026-04-22T11:49:28.736Z] ⚡ Ladestation erreicht!",
-    "[2026-04-22T11:49:31.799Z] ⚡ Ladestation erreicht!",
-    "[2026-04-22T11:49:34.905Z] ⚡ Ladestation erreicht!"
+    "[2026-04-22T11:50:40.105Z] ⚡ Ladestation erreicht!",
+    "[2026-04-22T11:50:45.157Z] ⚡ Ladestation erreicht!",
+    "[2026-04-22T11:50:48.192Z] ⚡ Ladestation erreicht!",
+    "[2026-04-22T11:50:51.177Z] [168s] Akku: 99% | Coins: 4058 | Station: true",
+    "[2026-04-22T11:50:51.177Z] ⚡ Ladestation erreicht!",
+    "[2026-04-22T11:50:54.153Z] ⚡ Ladestation erreicht!",
+    "[2026-04-22T11:50:57.125Z] ⚡ Ladestation erreicht!",
+    "[2026-04-22T11:51:00.070Z] ⚡ Ladestation erreicht!",
+    "[2026-04-22T11:51:08.072Z] Screenshot: game_000_180s",
+    "[2026-04-22T11:51:09.106Z] ⚡ Ladestation erreicht!"
   ]
 }
