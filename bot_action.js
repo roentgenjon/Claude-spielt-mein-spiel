@@ -71,6 +71,24 @@ async function playWorld(page, worldIdx, durationMs) {
   let lastBatt = 100;
   let maxCoins = 0;
   let ssCount = 0;
+  let lastLiveWrite = 0;
+
+  const writeLiveStatus = (world, batt, coins, logLines) => {
+    try {
+      const elapsed = Math.round((Date.now() - start) / 1000);
+      fs.mkdirSync('docs/status', { recursive: true });
+      fs.writeFileSync(`docs/status/${world}.json`, JSON.stringify({
+        world, run_id: process.env.GITHUB_RUN_ID || 'local',
+        timestamp: new Date().toISOString(),
+        duration: String(durationMin),
+        status: 'running',
+        elapsed_seconds: elapsed,
+        battery: String(batt),
+        coins,
+        log_last_10: logLines,
+      }, null, 2));
+    } catch {}
+  };
 
   while (Date.now() - start < durationMs) {
     frame++;
@@ -95,6 +113,15 @@ async function playWorld(page, worldIdx, durationMs) {
 
     if (frame % 10 === 1) log(`[${elapsed}s] Akku: ${batt}% | Coins: ${coins} | Station: ${hasStation}`);
     if (hasStation) log(`⚡ Ladestation erreicht!`);
+
+    // Live-Status alle 90s schreiben (wird vom Workflow-Hintergrundloop gepusht)
+    if (Date.now() - lastLiveWrite > 90000) {
+      lastLiveWrite = Date.now();
+      const logLines = fs.existsSync(LOG_FILE)
+        ? fs.readFileSync(LOG_FILE, 'utf8').split('\n').filter(Boolean).slice(-10)
+        : [];
+      writeLiveStatus(worldArg, lastBatt, maxCoins, logLines);
+    }
 
     // Akku-Management
     if (batt <= 50 && !lowBatt) { lowBatt = true; log(`⚠️ Akku ${batt}% – Ladestation anfliegen`); }
