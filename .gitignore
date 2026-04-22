@@ -1,0 +1,12 @@
+node_modules/
+*.log
+*_stdout.txt
+screenshots/
+screenshots2/
+screenshots3/
+ss3/
+final_ss/
+spielen_ss/
+ss_final2/
+*_log.txt
+log2.txt
