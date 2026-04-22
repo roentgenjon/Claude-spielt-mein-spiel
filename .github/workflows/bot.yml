@@ -1,0 +1,86 @@
+name: 🚁 Drone Bot
+
+on:
+  workflow_dispatch:
+    inputs:
+      world:
+        description: 'Welt auswählen'
+        required: true
+        default: 'normal'
+        type: choice
+        options:
+          - normal
+          - wueste
+          - parkour
+          - multiplayer
+          - alle
+      duration:
+        description: 'Laufzeit in Minuten'
+        required: true
+        default: '10'
+        type: string
+
+jobs:
+  play:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Node.js setup
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Dependencies installieren
+        run: npm ci
+
+      - name: Playwright Browser installieren
+        run: npx playwright install chromium --with-deps
+
+      - name: 🚁 Bot starten – ${{ inputs.world }}
+        run: |
+          node bot_action.js "${{ inputs.world }}" "${{ inputs.duration }}"
+        env:
+          WORLD: ${{ inputs.world }}
+          DURATION_MINUTES: ${{ inputs.duration }}
+
+      - name: Screenshots als Artifact hochladen
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: drone-screenshots-${{ inputs.world }}-${{ github.run_id }}
+          path: action_ss/
+          retention-days: 3
+
+      - name: Status in Repository speichern
+        if: always()
+        run: |
+          mkdir -p docs/status
+          cp action_log.txt docs/status/${{ inputs.world }}_log.txt 2>/dev/null || true
+          # Letzten Status als JSON speichern
+          node -e "
+            const fs = require('fs');
+            const log = fs.readFileSync('action_log.txt','utf8').split('\n').filter(Boolean);
+            const battMatch = [...log].reverse().find(l => l.includes('Akku:'));
+            const coinMatch = [...log].reverse().find(l => l.includes('Coins:'));
+            const status = {
+              world: '${{ inputs.world }}',
+              run_id: '${{ github.run_id }}',
+              timestamp: new Date().toISOString(),
+              duration: '${{ inputs.duration }}',
+              log_last_10: log.slice(-10),
+              battery: battMatch ? battMatch.match(/Akku:\\s*(\\d+)%/)?.[1] : null,
+              coins: coinMatch ? coinMatch.match(/Coins:\\s*([\\d,]+)/)?.[1] : null,
+            };
+            fs.mkdirSync('docs/status', { recursive: true });
+            fs.writeFileSync('docs/status/${{ inputs.world }}.json', JSON.stringify(status, null, 2));
+          " 2>/dev/null || true
+          git config user.name 'Drone Bot'
+          git config user.email 'bot@drone.local'
+          git add docs/status/ || true
+          git diff --staged --quiet || git commit -m "Bot-Status Update: ${{ inputs.world }} [skip ci]"
+          git push || true
