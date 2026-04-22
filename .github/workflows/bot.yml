@@ -24,6 +24,8 @@ jobs:
   play:
     runs-on: ubuntu-latest
     timeout-minutes: 60
+    permissions:
+      contents: write
 
     steps:
       - name: Checkout
@@ -43,9 +45,27 @@ jobs:
           sudo apt-get update
           npx playwright install --with-deps chromium
 
+      - name: Git Remote mit Token konfigurieren
+        run: |
+          git config user.name 'Drone Bot'
+          git config user.email 'bot@drone.local'
+          git remote set-url origin https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git
+
       - name: 🚁 Bot starten – ${{ inputs.world }}
         run: |
+          mkdir -p docs/status
+          # Hintergrund: Live-Status alle 90 Sekunden pushen
+          (while true; do
+            sleep 90
+            git add docs/status/ 2>/dev/null || true
+            git diff --staged --quiet 2>/dev/null || \
+              git commit -m "Live-Status: ${{ inputs.world }} [skip ci]" 2>/dev/null || true
+            git push 2>/dev/null || true
+          done) &
+          LIVE_PID=$!
+          # Bot starten
           node bot_action.js "${{ inputs.world }}" "${{ inputs.duration }}"
+          kill $LIVE_PID 2>/dev/null || true
         env:
           WORLD: ${{ inputs.world }}
           DURATION_MINUTES: ${{ inputs.duration }}
@@ -81,8 +101,6 @@ jobs:
             fs.mkdirSync('docs/status', { recursive: true });
             fs.writeFileSync('docs/status/${{ inputs.world }}.json', JSON.stringify(status, null, 2));
           " 2>/dev/null || true
-          git config user.name 'Drone Bot'
-          git config user.email 'bot@drone.local'
           git add docs/status/ || true
           git diff --staged --quiet || git commit -m "Bot-Status Update: ${{ inputs.world }} [skip ci]"
           git push || true
